@@ -16,6 +16,8 @@ class Agent(mesa.Agent):
     def step(self):
         observations = self.observe()
         print(observations)
+        if observations['center']:
+            print(observations['center'].get_agent())
         print(f"{str(self.unique_id)} stepped, pos:{str(self.get_coordinates())}")
         
         if (self.__x+1,self.__y+1) in self.model.grid:
@@ -28,6 +30,7 @@ class Agent(mesa.Agent):
     
     def observe(self):
         return {
+            'center':self.model.get_cell(self.get_coordinates()),
             'front':self.model.get_cell((self.__x,self.__y+1)),
             'back':self.model.get_cell((self.__x,self.__y-1)),
             'left':self.model.get_cell((self.__x-1,self.__y)),
