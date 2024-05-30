@@ -15,7 +15,7 @@ class Enviornment(mesa.Model):
 
         self.schedule = mesa.time.RandomActivation(self)
         
-        self.schedule.add(Agent(1, self, (1,1)))
+        self.schedule.add(Agent(1, self, (0,0)))
 
         self.grid = {
             (0,0):0,(1,0):0,(2,0):0,(3,0):0,(4,0):0,
@@ -26,6 +26,11 @@ class Enviornment(mesa.Model):
         }
         # 0 = Off
         # 1 = On
+
+    def get_cell(self,cell):
+        print(cell)
+        if not cell in self.grid: return None
+        return self.grid[cell]
 
     def change_cell(self,cell):
         self.grid[cell] = (self.grid[cell]+1)%1
