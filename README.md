@@ -15,8 +15,9 @@ Create a 2D grid environment of and implement a Simple Reflex Agent to navigate 
 ### Agent Actuators
 - Move forward or backward one space.
 - Rotate 90 degrees left or right.
-- Change the colour of the occupied to the Agents colour.  
-- Agents can communicate to other agents.
+- Interact with the cell they occupy  
+- Agents can communicate to other agents at any time.
+- Agents know where flags are at all times.
 ### Execution Loop
 - The loop is executed until the simulation is ended.
 - In each iteration:
@@ -24,3 +25,7 @@ Create a 2D grid environment of and implement a Simple Reflex Agent to navigate 
 	2. Agents chose an action to perform.
 	3. Agents the execute their actions.
 	4. The environment is then updated.
+
+## Game Rules
+- Only one agent can ocupy a space at once.
+- Agents can "tag" other agents infront to reset a flag they're holding.
