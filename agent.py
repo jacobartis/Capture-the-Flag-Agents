@@ -6,26 +6,28 @@ class Agent(mesa.Agent):
 
     def __init__(self, unique_id, model, start_space):
         super().__init__(unique_id, model)
-        self.space = start_space
         self.orientation = Orientation.north
+        self.space = start_space
     
+    #Called every cycle for the environment
     def step(self):
         observations = self.observe()
-        print(observations)
         if observations['center']:
-            print(observations['center'].get_agent())
-        print(f"{str(self.unique_id)} stepped, pos:{str(self.space.coordinates)}")
+            if observations['center'].get_object():
+                observations['center'].get_object().interact()
+        
         if observations['forward'] is None:
             self.turn_left()
         else:
             self.move()
+        print(f"{str(self.unique_id)} pos:{str(self.space.coordinates)} ori:{str(self.orientation)}")
 
     def turn_left(self):
         self.orientation = self.orientation.get_left()
 
     def move(self):
         #assert  in grid, "Trying to move to an invalid space"
-        self.space = self.model.get_cell(self.space.coordinates.forward(self.orientation))
+        self.model.move_agent(self,self.space.coordinates.forward(self.orientation))
     
     def observe(self):
         current_coords = self.space.coordinates
