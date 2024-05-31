@@ -1,38 +1,39 @@
 import mesa
+from coordinates import Coordinates
+from orientation import Orientation
 
 class Agent(mesa.Agent):
 
-    def __init__(self, unique_id, model, start_pos=(0,0)):
+    def __init__(self, unique_id, model, start_space):
         super().__init__(unique_id, model)
-        self.set_coordinates(start_pos)
-
-    def get_coordinates(self):
-        return (self.__x,self.__y)
-
-    def set_coordinates(self,coords):
-        self.__x = coords[0]
-        self.__y = coords[1]
-
+        self.space = start_space
+        self.orientation = Orientation.north
+    
     def step(self):
         observations = self.observe()
         print(observations)
         if observations['center']:
             print(observations['center'].get_agent())
-        print(f"{str(self.unique_id)} stepped, pos:{str(self.get_coordinates())}")
-        
-        if (self.__x+1,self.__y+1) in self.model.grid:
+        print(f"{str(self.unique_id)} stepped, pos:{str(self.space.coordinates)}")
+        if observations['forward'] is None:
+            self.turn_left()
+        else:
             self.move()
 
+    def turn_left(self):
+        self.orientation = self.orientation.get_left()
+
     def move(self):
-        grid = self.model.grid
-        assert (self.__x,self.__y+1) in grid, "Trying to move to an invalid space"
-        self.set_coordinates((self.__x,self.__y+1))
+        #assert  in grid, "Trying to move to an invalid space"
+        self.space = self.model.get_cell(self.space.coordinates.forward(self.orientation))
     
     def observe(self):
+        current_coords = self.space.coordinates
         return {
-            'center':self.model.get_cell(self.get_coordinates()),
-            'front':self.model.get_cell((self.__x,self.__y+1)),
-            'back':self.model.get_cell((self.__x,self.__y-1)),
-            'left':self.model.get_cell((self.__x-1,self.__y)),
-            'back':self.model.get_cell((self.__x+1,self.__y)),
+            'center':self.model.get_cell(current_coords),
+            'forward':self.model.get_cell(current_coords.forward(self.orientation)),
+            'forward left':self.model.get_cell(current_coords.forward_left(self.orientation)),
+            'left':self.model.get_cell(current_coords.left(self.orientation)),
+            'forward right':self.model.get_cell(current_coords.forward_right(self.orientation)),
+            'right':self.model.get_cell(current_coords.right(self.orientation)),
         }
