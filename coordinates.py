@@ -18,6 +18,14 @@ class Coordinates():
     def __str__(self) -> str:
         return str(f"({self.__x}, {self.__y})")
     
+    def __eq__(self, other: object) -> bool:
+        if not other or not isinstance(other, Coordinates):
+            return False
+        return self.get_coords()==other.get_coords()
+    
+    def __hash__(self) -> int:
+        return hash((self.__x, self.__y))
+
     def forward(self, orientation:Orientation):
         assert orientation in [Orientation.north, Orientation.south, Orientation.west, Orientation.east]
         match orientation:
