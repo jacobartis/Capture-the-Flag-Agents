@@ -1,10 +1,11 @@
 from agent import Agent
+from coordinates import Coordinates
 
 class Space():
 
-    def __init__(self):
+    def __init__(self, coordinates:Coordinates):
         self.agent = None
-        pass
+        self.coordinates = coordinates
 
     def add_agent(self,agent):
         self.agent = agent
