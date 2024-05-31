@@ -26,7 +26,6 @@ class Agent(mesa.Agent):
         self.orientation = self.orientation.get_left()
 
     def move(self):
-        #assert  in grid, "Trying to move to an invalid space"
         self.model.move_agent(self,self.space.coordinates.forward(self.orientation))
     
     def observe(self):
